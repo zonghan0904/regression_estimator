@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import pandas
 
 class DataLoader():
     def __init__(self, dataset, batch_size, data_dim, shuffle=True, seed=None):
@@ -44,12 +45,58 @@ class DataLoader():
         s += ", DataLoader Object>"
         return s
 
+class CustomDataset():
+    def __init__(self):
+        self.data = None
+        self._shape = None
+        self.empty = True
+
+    def read_csv(self, filename, header=None):
+        self.data = pandas.read_csv(filename, header=header).to_numpy()
+        self.empty = False
+
+    def train_test_split(self, ratio):
+        assert not self.empty
+
+        size = self.__len__()
+        ratio = max(min(ratio, 1.0), 0.0)
+        train_num = int(size * ratio)
+        test_num = size - train_num
+        randomstate = np.random.default_rng(None)
+        idx = randomstate.choice(np.arange(0, size), size, replace=False)
+        tmp_data = self.data[idx]
+
+        train_data = tmp_data[:train_num]
+        test_data = None if test_num < 0 else tmp_data[train_num:]
+
+        return train_data, test_data
+
+    @property
+    def shape(self):
+        self._shape = self.data.shape if not self.empty else None
+        return self._shape
+
+    def __len__(self):
+        l = self.shape[0] if not self.empty else 0
+        return l
+
+    def __str__(self):
+        if self.empty:
+            s = "<Empty Dataset>"
+        else:
+            s = f"<{self.data}, Shape {self.shape}>"
+        return s
+
+
 if __name__ == "__main__":
+    dataset = CustomDataset()
+    dataset.read_csv("data.csv", header=None)
+    train_data, test_data = dataset.train_test_split(0.99)
+    print(train_data.shape)
+
     BATCH_SIZE = 1
 
-    dataset = np.arange(0, 10).reshape(-1, 2)
-
-    dataloader = DataLoader(dataset, BATCH_SIZE, 1)
+    dataloader = DataLoader(train_data, BATCH_SIZE, 5)
     print(dataloader)
     print()
 
