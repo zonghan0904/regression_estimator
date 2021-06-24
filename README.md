@@ -19,7 +19,7 @@
 ### Function Call in C
 * convert PyTorch model to Torch script `$ python convert.py`
 * the Torch script module will be saved as `./weights/traced_regression_net_model.pt`
-* donwload [libtorch](wget https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip) zip file and unzip it
+* donwload [libtorch](https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip) zip file and unzip it
 * move libtorch to `/usr/local/lib`
 * compile estimator
     * `$ cd lib/estimator/`
