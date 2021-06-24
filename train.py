@@ -13,6 +13,8 @@ def main(args):
     # specify the saving path
     if not os.path.exists("./weights"):
         os.makedirs("./weights")
+    if not os.path.exists("./evaluations"):
+        os.makedirs("./evaluations")
     save_path = "./weights/"
 
     # hyper parameter
@@ -140,8 +142,8 @@ def main(args):
         ax1.set_ylabel("Mean Square Error")
         fig2.tight_layout(rect=[0,0.15,1,1])
         fig2.legend(loc="lower right")
-        fig1.savefig("loss.png")
-        fig2.savefig("compare.png")
+        fig1.savefig("evaluations/loss.png")
+        fig2.savefig("evaluations/compare.png")
         plt.show()
 
 if __name__ == "__main__":
