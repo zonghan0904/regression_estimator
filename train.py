@@ -103,7 +103,7 @@ def main(args):
                 progress += (data.shape[0] / total_num) * 100
                 print(f"Epoch: {e}, Iter {it}, Progress: {progress:.1f}%, Loss: {loss.data:.6f}")
 
-            loss_ls.append(loss.data)
+            loss_ls.append(loss.cpu().data)
         epoch_loss.append(np.array(loss_ls).sum())
 
     # validation after training
